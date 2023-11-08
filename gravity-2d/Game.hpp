@@ -11,7 +11,7 @@ public:
 	void init(string title, int xpos, int ypos, int width, int height, bool fullscreen);
 	
 	void handleEvents();
-	void update();
+	void update(Uint32 frameStart);
 	void render();
 	void clean();
 

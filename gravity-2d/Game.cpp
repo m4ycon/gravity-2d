@@ -65,15 +65,25 @@ void Game::handleEvents()
     }
 }
 
-void Game::update()
+void Game::update(Uint32 frameStart)
 {
+    vector<Particle*> newParticles;
     rep(i, 0, particles.size()) {
-        rep(j, i+1, particles.size()) {
+        if (particles[i]->m == 0) continue;
+        rep(j, i + 1, particles.size()) {
+
             particles[i]->applyForce(particles[j]);
+
+            if (particles[i]->distance(particles[j]) < 4)
+                particles[i]->merge(particles[j]);
         }
+        newParticles.push_back(particles[i]);
     }
-    
-    for (auto p : particles) p->move();
+
+    this->particles = newParticles;
+
+    double frameTime = (SDL_GetTicks() - frameStart) / 1000;
+    for (auto p : particles) p->move(max(1.0, frameTime));
 }
 
 void Game::render()
@@ -83,7 +93,11 @@ void Game::render()
 
     for (auto p : particles) {
         SDL_SetRenderDrawColor(renderer, RGBA_WHITE);
-        SDL_RenderDrawPoint(renderer, p->x, p->y);
+
+        //SDL_RenderDrawPoint(renderer, p->x, p->y);
+
+        SDL_Rect rect = { p->x, p->y, 2, 2 };
+        SDL_RenderDrawRect(renderer, &rect);
     }
 
     SDL_RenderPresent(renderer);
@@ -110,6 +124,13 @@ void Game::resetParticles()
         Particle* p = new Particle(x, y, dx, dy, initialMass);
         this->particles.push_back(p);
     }
+    return;
+
+    Particle* p;
+    p = new Particle(200, 100, .1, .1, initialMass);
+    this->particles.push_back(p);
+    p = new Particle(100, 200, -.1, -.1, initialMass);
+    this->particles.push_back(p);
 }
 
 double Game::randomDouble(double lowerBound = 0, double upperBound = 1)

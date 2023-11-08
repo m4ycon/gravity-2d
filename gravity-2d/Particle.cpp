@@ -13,9 +13,7 @@ Particle::Particle(double x, double y, double dx, double dy, double m)
 
 void Particle::applyForce(Particle* particle)
 {
-	auto dx = this->x - particle->x;
-	auto dy = this->y - particle->y;
-	auto distance = sqrt(dx * dx + dy * dy);
+	auto distance = this->distance(particle);
 	auto force = this->calculateForce(this->m, particle->m, distance);
 
 	auto cadj = this->x - particle->x; // cateto adjacente
@@ -33,10 +31,30 @@ void Particle::applyForce(Particle* particle)
 	particle->dy += yForce;
 }
 
-void Particle::move()
+double Particle::distance(Particle* particle)
 {
-	this->x += this->dx;
-	this->y += this->dy;
+	auto dx = this->x - particle->x;
+	auto dy = this->y - particle->y;
+	auto distance = sqrt(dx * dx + dy * dy);
+	return distance;
+}
+
+void Particle::merge(Particle* particle)
+{
+	// merge particles
+	this->dx += particle->dx;
+	this->dy += particle->dy;
+	this->m += particle->m;
+
+	particle->m = 0;
+	particle->dx = 0;
+	particle->dy = 0;
+}
+
+void Particle::move(Uint32 timeLapsed)
+{
+	this->x += this->dx * timeLapsed;
+	this->y += this->dy * timeLapsed;
 }
 
 double Particle::calculateForce(double mass1, double mass2, double distance)

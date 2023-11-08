@@ -11,7 +11,9 @@ public:
 	Particle(double x, double y, double dx, double dy, double m);
 	
 	void applyForce(Particle* particle);
-	void move();
+	double distance(Particle* particle);
+	void merge(Particle* particle);
+	void move(Uint32 timeLapsed);
 
 	static double calculateForce(double mass1, double mass2, double distance);
 
