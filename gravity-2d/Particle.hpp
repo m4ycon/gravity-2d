@@ -1,16 +1,14 @@
 #pragma once
 #include "common.hpp"
 
-const double Particle::G = 6.67e-11;
-
 class Particle
 {
 public:
 	static const double G;
 
-	double x = 0, y = 0, dx = 0, dy = 0;
+	double x = 0, y = 0, dx = 0, dy = 0, m = 0;
 
-	Particle(double x, double y);
+	Particle(double x, double y, double dx, double dy, double m);
 	
 	void applyForce(Particle* particle);
 	void move();

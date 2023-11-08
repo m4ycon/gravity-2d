@@ -1,8 +1,10 @@
-#include "common.hpp"
 #include "Game.hpp"
 
-Game::Game()
+Game::Game(int nParticles, double initialVelLimit, double mass)
 {
+    this->nParticles = nParticles;
+    this->initialVelLimit = initialVelLimit;
+    this->initialMass = mass;
 }
 
 Game::~Game()
@@ -35,15 +37,28 @@ void Game::init(string title, int xpos, int ypos, int width, int height, bool fu
     SDL_SetRenderDrawColor(renderer, RGBA_BLACK);
 
     isRunning = true;
+
+    this->resetParticles();
 }
 
 void Game::handleEvents()
 {
     SDL_Event event;
     SDL_PollEvent(&event);
-    switch (event.type) {
-        case SDL_QUIT:
+    
+    if (event.type == SDL_QUIT) {
+        isRunning = false;
+        return;
+    }
+
+    if (event.type != SDL_KEYDOWN) return;
+
+    switch (event.key.keysym.sym) {
+        case SDLK_q:
             isRunning = false;
+            break;
+        case SDLK_r:
+            this->resetParticles();
             break;
         default:
             break;
@@ -52,13 +67,25 @@ void Game::handleEvents()
 
 void Game::update()
 {
-    cnt++;
-    cout << cnt << endl;
+    rep(i, 0, particles.size()) {
+        rep(j, i+1, particles.size()) {
+            particles[i]->applyForce(particles[j]);
+        }
+    }
+    
+    for (auto p : particles) p->move();
 }
 
 void Game::render()
 {
+    SDL_SetRenderDrawColor(renderer, RGBA_BLACK);
     SDL_RenderClear(renderer);
+
+    for (auto p : particles) {
+        SDL_SetRenderDrawColor(renderer, RGBA_WHITE);
+        SDL_RenderDrawPoint(renderer, p->x, p->y);
+    }
+
     SDL_RenderPresent(renderer);
 }
 
@@ -68,4 +95,28 @@ void Game::clean()
     SDL_DestroyRenderer(renderer);
     SDL_Quit();
     cout << "Game Cleaned" << endl;
+}
+
+void Game::resetParticles()
+{
+    this->particles = {};
+
+    rep(_, 0, nParticles) {
+        auto x = randomDouble(0, SCREEN_WIDTH);
+        auto y = randomDouble(0, SCREEN_HEIGHT);
+        auto dx = randomDouble(-initialVelLimit, initialVelLimit);
+        auto dy = randomDouble(-initialVelLimit, initialVelLimit);
+        
+        Particle* p = new Particle(x, y, dx, dy, initialMass);
+        this->particles.push_back(p);
+    }
+}
+
+double Game::randomDouble(double lowerBound = 0, double upperBound = 1)
+{
+    random_device rd;  // Create a random device
+    mt19937 gen(rd());  // Create a Mersenne Twister pseudo-random number generator
+    uniform_real_distribution<> dis(lowerBound, upperBound);
+
+    return dis(gen);
 }

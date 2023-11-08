@@ -1,6 +1,8 @@
 #include "SDL.h"
 #include <iostream>
 #include <stdio.h>
+#include <vector>
+#include <random>
 
 using namespace std;
 
