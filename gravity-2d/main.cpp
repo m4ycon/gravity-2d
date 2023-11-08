@@ -10,9 +10,9 @@ int main(int argc, char* argv[]) {
 	Uint32 frameStart;
 	int frameTime;
 
-	int nParticles = 200;
-	double initialVelLimit = .1;
-	double initialMass = 100000;
+	int nParticles = 2000;
+	double initialVelLimit = .1; // m/s
+	double initialMass = INITIAL_MASS; // kg
 
 	game = new Game(nParticles, initialVelLimit, initialMass);
 	game->init("Gravity 2D", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, false);
@@ -25,7 +25,6 @@ int main(int argc, char* argv[]) {
 		game->render();
 
 		frameTime = SDL_GetTicks() - frameStart;
-
 		if (frameDelay > frameTime) SDL_Delay(frameDelay - frameTime);
 	}
 

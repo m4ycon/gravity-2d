@@ -20,3 +20,6 @@ typedef double db;
 #define RGBA_WHITE 255, 255, 255, 255
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
+
+#define G 6.67e-11
+#define INITIAL_MASS 1e5

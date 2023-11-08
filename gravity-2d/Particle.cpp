@@ -1,7 +1,5 @@
 #include "Particle.hpp"
 
-const double Particle::G = 6.67e-11;
-
 Particle::Particle(double x, double y, double dx, double dy, double m)
 {
 	this->x = x;
@@ -9,6 +7,10 @@ Particle::Particle(double x, double y, double dx, double dy, double m)
 	this->dx = dx;
 	this->dy = dy;
 	this->m = m;
+
+
+	int area = this->m / INITIAL_MASS; // num of particles
+	this->radius = sqrt(M_PI * area);
 }
 
 void Particle::applyForce(Particle* particle)
@@ -39,6 +41,13 @@ double Particle::distance(Particle* particle)
 	return distance;
 }
 
+bool Particle::colision(Particle* particle)
+{
+	auto distance = this->distance(particle);
+	distance = distance - (this->radius + particle->radius);
+	return distance <= 0;
+}
+
 void Particle::merge(Particle* particle)
 {
 	// merge particles
@@ -46,15 +55,26 @@ void Particle::merge(Particle* particle)
 	this->dy += particle->dy;
 	this->m += particle->m;
 
+	int area = (this->m + particle->m) / INITIAL_MASS; // num of particles
+	this->radius = sqrt(M_PI * area);
+
 	particle->m = 0;
 	particle->dx = 0;
 	particle->dy = 0;
+	particle->radius = 0;
 }
 
-void Particle::move(Uint32 timeLapsed)
+void Particle::move(double timeLapsed)
 {
 	this->x += this->dx * timeLapsed;
 	this->y += this->dy * timeLapsed;
+}
+
+void Particle::render(SDL_Renderer* renderer)
+{
+	SDL_SetRenderDrawColor(renderer, RGBA_WHITE);
+	SDL_Rect rect = { this->x, this->y, this->radius, this->radius };
+	SDL_RenderDrawRect(renderer, &rect);
 }
 
 double Particle::calculateForce(double mass1, double mass2, double distance)
