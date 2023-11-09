@@ -1,5 +1,6 @@
 #pragma once
 #include "common.hpp"
+#include "Utils.hpp"
 
 class Particle
 {

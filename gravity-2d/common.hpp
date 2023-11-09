@@ -22,4 +22,6 @@ typedef double db;
 #define SCREEN_HEIGHT 480
 
 #define G 6.67e-11
-#define INITIAL_MASS 1e5
+#define N_PARTICLES 2000
+#define INITIAL_MASS 250000 // kg
+#define INITIAL_VEL_LIMIT 1 // m/s

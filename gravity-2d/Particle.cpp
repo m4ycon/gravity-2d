@@ -73,8 +73,7 @@ void Particle::move(double timeLapsed)
 void Particle::render(SDL_Renderer* renderer)
 {
 	SDL_SetRenderDrawColor(renderer, RGBA_WHITE);
-	SDL_Rect rect = { this->x, this->y, this->radius, this->radius };
-	SDL_RenderDrawRect(renderer, &rect);
+	Utils::DrawCircle(renderer, this->x, this->y, this->radius);
 }
 
 double Particle::calculateForce(double mass1, double mass2, double distance)

@@ -10,8 +10,8 @@ int main(int argc, char* argv[]) {
 	Uint32 frameStart;
 	int frameTime;
 
-	int nParticles = 2000;
-	double initialVelLimit = .1; // m/s
+	int nParticles = N_PARTICLES;
+	double initialVelLimit = INITIAL_VEL_LIMIT; // m/s
 	double initialMass = INITIAL_MASS; // kg
 
 	game = new Game(nParticles, initialVelLimit, initialMass);
@@ -26,6 +26,8 @@ int main(int argc, char* argv[]) {
 
 		frameTime = SDL_GetTicks() - frameStart;
 		if (frameDelay > frameTime) SDL_Delay(frameDelay - frameTime);
+
+		cout << "FPS: " << (1000 / (SDL_GetTicks() - frameStart)) << endl;
 	}
 
 	game->clean();
