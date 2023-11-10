@@ -1,8 +1,11 @@
 #include "SDL.h"
+#include "SDL_ttf.h"
+#include <string>
 #include <iostream>
 #include <stdio.h>
 #include <vector>
 #include <random>
+#include "Utils.hpp"
 
 using namespace std;
 
@@ -23,5 +26,5 @@ typedef double db;
 
 #define G 6.67e-11
 #define N_PARTICLES 2000
-#define INITIAL_MASS 250000 // kg
-#define INITIAL_VEL_LIMIT 1 // m/s
+#define INITIAL_MASS 100000 // kg
+#define INITIAL_VEL_LIMIT 0 // m/s

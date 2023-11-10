@@ -13,6 +13,7 @@ public:
 	void handleEvents();
 	void update(Uint32 frameStart);
 	void render();
+	void renderFPS(Uint32 frameStart);
 	void clean();
 
 	bool running() { return isRunning; }

@@ -4,8 +4,8 @@ Game* game = nullptr;
 
 int main(int argc, char* argv[]) {
 
-	const int FPS = 60;
-	const int frameDelay = 1000 / FPS;
+	const int LIMIT_FPS = 60;
+	const int frameDelay = 1000 / LIMIT_FPS;
 
 	Uint32 frameStart;
 	int frameTime;
@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 		frameTime = SDL_GetTicks() - frameStart;
 		if (frameDelay > frameTime) SDL_Delay(frameDelay - frameTime);
 
-		cout << "FPS: " << (1000 / (SDL_GetTicks() - frameStart)) << endl;
+		game->renderFPS(frameStart);
 	}
 
 	game->clean();

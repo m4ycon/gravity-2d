@@ -71,11 +71,10 @@ void Game::update(Uint32 frameStart)
     rep(i, 0, particles.size()) {
         if (particles[i]->m == 0) continue;
         rep(j, i + 1, particles.size()) {
-
             particles[i]->applyForce(particles[j]);
 
-            if (particles[i]->colision(particles[j]))
-                particles[i]->merge(particles[j]);
+            //if (particles[i]->colision(particles[j]))
+                //particles[i]->merge(particles[j]);
         }
         newParticles.push_back(particles[i]);
     }
@@ -100,6 +99,13 @@ void Game::render()
     SDL_RenderPresent(renderer);
 }
 
+void Game::renderFPS(Uint32 frameStart)
+{
+    auto actualFPS = 1000 / (SDL_GetTicks() - frameStart);
+    Utils::WriteOnScreen(renderer, to_string(actualFPS), 10, 10);
+    SDL_RenderPresent(renderer);
+}
+
 void Game::clean()
 {
     SDL_DestroyWindow(window);
@@ -112,9 +118,10 @@ void Game::resetParticles()
 {
     this->particles = {};
 
+    const auto safePadding = 100;
     rep(_, 0, nParticles) {
-        auto x = randomDouble(0, SCREEN_WIDTH);
-        auto y = randomDouble(0, SCREEN_HEIGHT);
+        auto x = randomDouble(0 + safePadding, SCREEN_WIDTH - safePadding);
+        auto y = randomDouble(0 + safePadding, SCREEN_HEIGHT - safePadding);
         auto dx = randomDouble(-initialVelLimit, initialVelLimit);
         auto dy = randomDouble(-initialVelLimit, initialVelLimit);
         

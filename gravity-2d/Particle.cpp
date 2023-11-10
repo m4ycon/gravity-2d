@@ -18,6 +18,8 @@ void Particle::applyForce(Particle* particle)
 	auto distance = this->distance(particle);
 	auto force = this->calculateForce(this->m, particle->m, distance);
 
+	if (distance < 1) return;
+
 	auto cadj = this->x - particle->x; // cateto adjacente
 	auto cops = this->y - particle->y; // cateto oposto
 	auto hipo = sqrt(cadj * cadj + cops * cops); // hipotenusa
@@ -73,7 +75,16 @@ void Particle::move(double timeLapsed)
 void Particle::render(SDL_Renderer* renderer)
 {
 	SDL_SetRenderDrawColor(renderer, RGBA_WHITE);
-	Utils::DrawCircle(renderer, this->x, this->y, this->radius);
+
+	// point
+	SDL_RenderDrawPoint(renderer, this->x, this->y);
+	
+	// square
+	//SDL_Rect rect = { this->x - this->radius, this->y - this->radius, this->radius * 2, this->radius * 2 };
+	//SDL_RenderFillRect(renderer, &rect);
+
+	// circle
+	//Utils::DrawCircle(renderer, this->x, this->y, this->radius);
 }
 
 double Particle::calculateForce(double mass1, double mass2, double distance)
