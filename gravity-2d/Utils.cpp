@@ -34,3 +34,17 @@ void Utils::DrawCircle(SDL_Renderer* renderer, int32_t centreX, int32_t centreY,
 	}
 }
 
+double Utils::calculateForce(double mass1, double mass2, double distance)
+{
+	return G * mass1 * mass2 / (distance * distance);
+}
+
+double Utils::randomDouble(double lowerBound, double upperBound)
+{
+	random_device rd;  // Create a random device
+	mt19937 gen(rd());  // Create a Mersenne Twister pseudo-random number generator
+	uniform_real_distribution<> dis(lowerBound, upperBound);
+
+	return dis(gen);
+}
+

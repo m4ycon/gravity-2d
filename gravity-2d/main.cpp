@@ -13,8 +13,9 @@ int main(int argc, char* argv[]) {
 	int nParticles = N_PARTICLES;
 	double initialVelLimit = INITIAL_VEL_LIMIT; // m/s
 	double initialMass = INITIAL_MASS; // kg
+	int gridSize = 20;
 
-	game = new Game(nParticles, initialVelLimit, initialMass);
+	game = new Game(nParticles, initialVelLimit, initialMass, gridSize);
 	game->init("Gravity 2D", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, false);
 
 	while (game->running()) {

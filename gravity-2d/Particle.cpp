@@ -16,7 +16,7 @@ Particle::Particle(double x, double y, double dx, double dy, double m)
 void Particle::applyForce(Particle* particle)
 {
 	auto distance = this->distance(particle);
-	auto force = this->calculateForce(this->m, particle->m, distance);
+	auto force = Utils::calculateForce(this->m, particle->m, distance);
 
 	if (distance < 5) return;
 
@@ -85,9 +85,4 @@ void Particle::render(SDL_Renderer* renderer)
 
 	// circle
 	//Utils::DrawCircle(renderer, this->x, this->y, this->radius);
-}
-
-double Particle::calculateForce(double mass1, double mass2, double distance)
-{
-	return G * mass1 * mass2 / (distance * distance);
 }

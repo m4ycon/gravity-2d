@@ -1,10 +1,11 @@
 #include "Game.hpp"
 
-Game::Game(int nParticles, double initialVelLimit, double mass)
+Game::Game(int nParticles, double initialVelLimit, double mass, int gridSize)
 {
     this->nParticles = nParticles;
     this->initialVelLimit = initialVelLimit;
     this->initialMass = mass;
+    this->gridSize = gridSize;
 }
 
 Game::~Game()
@@ -38,7 +39,7 @@ void Game::init(string title, int xpos, int ypos, int width, int height, bool fu
 
     isRunning = true;
 
-    this->resetParticles();
+    this->initParticles();
 }
 
 void Game::handleEvents()
@@ -58,7 +59,7 @@ void Game::handleEvents()
             isRunning = false;
             break;
         case SDLK_r:
-            this->resetParticles();
+            this->initParticles();
             break;
         default:
             break;
@@ -91,6 +92,7 @@ void Game::render()
     SDL_RenderClear(renderer);
     
     for (auto p : particles) p->render(renderer);
+    for (auto gc : grid) gc->render(renderer);
 
     SDL_RenderPresent(renderer);
 }
@@ -109,27 +111,24 @@ void Game::clean()
     cout << "Game Cleaned" << endl;
 }
 
-void Game::resetParticles()
+void Game::initParticles()
 {
     this->particles = {};
+    this->grid = {};
+
+    this->gridSize = 20;
+    for (int x = 0; x < SCREEN_WIDTH; x += gridSize)
+        for (int y = 0; y < SCREEN_HEIGHT; y += gridSize)
+            grid.push_back(new GridCell(x, y, gridSize, gridSize, 0));
 
     const auto safePadding = 100;
     rep(_, 0, nParticles) {
-        auto x = randomDouble(0 + safePadding, SCREEN_WIDTH - safePadding);
-        auto y = randomDouble(0 + safePadding, SCREEN_HEIGHT - safePadding);
-        auto dx = randomDouble(-initialVelLimit, initialVelLimit);
-        auto dy = randomDouble(-initialVelLimit, initialVelLimit);
+        auto x = Utils::randomDouble(0 + safePadding, SCREEN_WIDTH - safePadding);
+        auto y = Utils::randomDouble(0 + safePadding, SCREEN_HEIGHT - safePadding);
+        auto dx = Utils::randomDouble(-initialVelLimit, initialVelLimit);
+        auto dy = Utils::randomDouble(-initialVelLimit, initialVelLimit);
         
         Particle* p = new Particle(x, y, dx, dy, initialMass);
         this->particles.push_back(p);
     }
-}
-
-double Game::randomDouble(double lowerBound = 0, double upperBound = 1)
-{
-    random_device rd;  // Create a random device
-    mt19937 gen(rd());  // Create a Mersenne Twister pseudo-random number generator
-    uniform_real_distribution<> dis(lowerBound, upperBound);
-
-    return dis(gen);
 }

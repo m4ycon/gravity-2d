@@ -17,7 +17,5 @@ public:
 	double distance(Particle* particle);
 	bool colision(Particle* particle);
 
-	static double calculateForce(double mass1, double mass2, double distance);
-
 private:
 };

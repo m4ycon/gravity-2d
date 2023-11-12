@@ -3,7 +3,6 @@
 #include <iostream>
 #include <stdio.h>
 #include <vector>
-#include <random>
 #include "Utils.hpp"
 
 using namespace std;
@@ -23,7 +22,6 @@ typedef double db;
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 
-#define G 6.67e-11
 #define N_PARTICLES 1500
 #define INITIAL_MASS 1000000 // kg
 #define INITIAL_VEL_LIMIT 0 // m/s - max initial particles velocity
