@@ -6,6 +6,10 @@ Game::Game(int nParticles, double initialVelLimit, double mass, int gridSize)
     this->initialVelLimit = initialVelLimit;
     this->initialMass = mass;
     this->gridSize = gridSize;
+    
+    this->isRunning = false;
+    this->window = nullptr;
+    this->renderer = nullptr;
 }
 
 Game::~Game()
