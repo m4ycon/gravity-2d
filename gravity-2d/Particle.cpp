@@ -18,7 +18,7 @@ void Particle::applyForce(Particle* particle)
 	auto distance = this->distance(particle);
 	auto force = this->calculateForce(this->m, particle->m, distance);
 
-	if (distance < 1) return;
+	if (distance < 5) return;
 
 	auto cadj = this->x - particle->x; // cateto adjacente
 	auto cops = this->y - particle->y; // cateto oposto

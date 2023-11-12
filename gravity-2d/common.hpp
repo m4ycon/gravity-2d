@@ -1,5 +1,4 @@
 #include "SDL.h"
-#include "SDL_ttf.h"
 #include <string>
 #include <iostream>
 #include <stdio.h>
@@ -25,6 +24,6 @@ typedef double db;
 #define SCREEN_HEIGHT 480
 
 #define G 6.67e-11
-#define N_PARTICLES 2000
-#define INITIAL_MASS 100000 // kg
-#define INITIAL_VEL_LIMIT 0 // m/s
+#define N_PARTICLES 1500
+#define INITIAL_MASS 1000000 // kg
+#define INITIAL_VEL_LIMIT 0 // m/s - max initial particles velocity

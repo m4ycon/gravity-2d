@@ -85,16 +85,12 @@ void Game::update(Uint32 frameStart)
     for (auto p : particles) p->move(frameTime);
 }
 
-Uint16 cnt = 0;
-
 void Game::render()
 {
     SDL_SetRenderDrawColor(renderer, RGBA_BLACK);
     SDL_RenderClear(renderer);
-
+    
     for (auto p : particles) p->render(renderer);
-
-    SDL_RenderDrawPoint(renderer, 10 + (cnt % 10), 10); cnt++; // to check fps more clearly :)
 
     SDL_RenderPresent(renderer);
 }
@@ -102,8 +98,7 @@ void Game::render()
 void Game::renderFPS(Uint32 frameStart)
 {
     auto actualFPS = 1000 / (SDL_GetTicks() - frameStart);
-    Utils::WriteOnScreen(renderer, to_string(actualFPS), 10, 10);
-    SDL_RenderPresent(renderer);
+    cout << "FPS: " << actualFPS << endl;
 }
 
 void Game::clean()
