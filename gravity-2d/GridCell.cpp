@@ -10,7 +10,7 @@ GridCell::GridCell(double x, double y, double w, double h, double mass)
 	this->midX = x + w / 2;
 	this->midY = y + h / 2;
 
-	if (w <= 2) return;
+	if (w <= MIN_INNER_GRID) return;
 
 	this->innerGrid.push_back(new GridCell(x, y, w / 2, h / 2, 0));
 	this->innerGrid.push_back(new GridCell(midX, y, w / 2, h / 2, 0));

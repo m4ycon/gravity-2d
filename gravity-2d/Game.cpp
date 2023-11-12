@@ -68,7 +68,7 @@ void Game::handleEvents()
 
 void Game::update(Uint32 frameStart)
 {
-    for (auto line : grid) for (auto col : line) col->resetMass();
+    for (auto& line : grid) for (auto col : line) col->resetMass();
 
     for (auto p : particles) {
         auto gc = getGridCell(p->x, p->y);
@@ -90,8 +90,8 @@ void Game::render()
     SDL_SetRenderDrawColor(renderer, RGBA_BLACK);
     SDL_RenderClear(renderer);
     
+    for (auto& line : grid) for (auto col : line) col->render(renderer);
     //for (auto p : particles) p->render(renderer);
-    for (auto line : grid) for (auto col : line ) col->render(renderer);
 
     SDL_RenderPresent(renderer);
 }
