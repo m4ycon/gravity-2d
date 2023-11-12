@@ -1,6 +1,7 @@
 #pragma once
 
 #include "common.hpp"
+#include "Particle.hpp"
 
 using namespace std;
 
@@ -11,11 +12,14 @@ public:
 
 	void render(SDL_Renderer* renderer);
 
-	void resetMass() { this->mass = 0; }
-	void addMass(double mass) { this->mass += mass; }
+	void resetMass();
+	void addMass(Particle* p);
 
 private:
 	double x, y, w, h, mass;
 	double midX, midY;
+	vector<GridCell*> innerGrid;
+
+	GridCell* getInnerGridCell(int x, int y);
 };
 

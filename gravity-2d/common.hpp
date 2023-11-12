@@ -22,7 +22,7 @@ typedef double db;
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480
 
-#define N_PARTICLES 1500
+#define N_PARTICLES 500
 #define INITIAL_MASS 1000000 // kg
 #define INITIAL_VEL_LIMIT 0 // m/s - max initial particles velocity
-#define GRID_SIZE 5 // px
+#define GRID_SIZE 128 // px

@@ -72,7 +72,7 @@ void Game::update(Uint32 frameStart)
 
     for (auto p : particles) {
         auto gc = getGridCell(p->x, p->y);
-        if (gc != nullptr) gc->addMass(p->m);
+        if (gc != nullptr) gc->addMass(p);
     }
 
     rep(i, 0, particles.size()) {
