@@ -19,6 +19,8 @@ public:
 
 	bool running() { return isRunning; }
 
+	GridCell* getGridCell(double x, double y);
+
 private:
 	bool isRunning;
 	SDL_Window* window;
@@ -30,6 +32,6 @@ private:
 	int gridSize;
 
 	vector<Particle*> particles;
-	vector<GridCell*> grid;
+	vector<vector<GridCell*>> grid;
 	void initParticles();
 };

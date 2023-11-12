@@ -68,19 +68,18 @@ void Game::handleEvents()
 
 void Game::update(Uint32 frameStart)
 {
-    vector<Particle*> newParticles;
-    rep(i, 0, particles.size()) {
-        if (particles[i]->m == 0) continue;
-        rep(j, i + 1, particles.size()) {
-            particles[i]->applyForce(particles[j]);
+    for (auto line : grid) for (auto col : line) col->resetMass();
 
-            //if (particles[i]->colision(particles[j]))
-                //particles[i]->merge(particles[j]);
-        }
-        newParticles.push_back(particles[i]);
+    for (auto p : particles) {
+        auto gc = getGridCell(p->x, p->y);
+        if (gc != nullptr) gc->addMass(p->m);
     }
 
-    this->particles = newParticles;
+    rep(i, 0, particles.size()) {
+        rep(j, i + 1, particles.size()) {
+            particles[i]->applyForce(particles[j]);
+        }
+    }
 
     double frameTime = (SDL_GetTicks() - static_cast<double>(frameStart)) / 1000.;
     for (auto p : particles) p->move(frameTime);
@@ -91,8 +90,8 @@ void Game::render()
     SDL_SetRenderDrawColor(renderer, RGBA_BLACK);
     SDL_RenderClear(renderer);
     
-    for (auto p : particles) p->render(renderer);
-    for (auto gc : grid) gc->render(renderer);
+    //for (auto p : particles) p->render(renderer);
+    for (auto line : grid) for (auto col : line ) col->render(renderer);
 
     SDL_RenderPresent(renderer);
 }
@@ -111,15 +110,26 @@ void Game::clean()
     cout << "Game Cleaned" << endl;
 }
 
+GridCell* Game::getGridCell(double x, double y)
+{
+    if (x < 0 || y < 0) return nullptr;
+    if (x >= SCREEN_WIDTH || y >= SCREEN_HEIGHT) return nullptr;
+
+    return grid[x / gridSize][y / gridSize];
+}
+
 void Game::initParticles()
 {
     this->particles = {};
     this->grid = {};
 
-    this->gridSize = 20;
-    for (int x = 0; x < SCREEN_WIDTH; x += gridSize)
-        for (int y = 0; y < SCREEN_HEIGHT; y += gridSize)
-            grid.push_back(new GridCell(x, y, gridSize, gridSize, 0));
+    for (int x = 0; x < SCREEN_WIDTH; x += gridSize) {
+        grid.push_back({});
+        for (int y = 0; y < SCREEN_HEIGHT; y += gridSize) {
+            auto gc = new GridCell(x, y, gridSize, gridSize, 0);
+            grid[x / gridSize].push_back(gc);
+        }
+    }
 
     const auto safePadding = 100;
     rep(_, 0, nParticles) {

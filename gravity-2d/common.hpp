@@ -25,3 +25,4 @@ typedef double db;
 #define N_PARTICLES 1500
 #define INITIAL_MASS 1000000 // kg
 #define INITIAL_VEL_LIMIT 0 // m/s - max initial particles velocity
+#define GRID_SIZE 5 // px
