@@ -1,21 +1,23 @@
 #include "GridCell.hpp"
 
-GridCell::GridCell(double x, double y, double w, double h, double mass)
+GridCell::GridCell(double x, double y, double w, double h)
 {
-	this->x = x;
-	this->y = y;
-	this->w = w;
-	this->h = h;
-	this->mass = mass;
+	this->x = x, this->y = y;
+	this->w = w, this->h = h;
 	this->midX = x + w / 2;
 	this->midY = y + h / 2;
+	
+	this->dx = 0, this->dy = 0;
+	this->mass = 0;
 
 	if (w <= MIN_INNER_GRID) return;
 
-	this->innerGrid.push_back(new GridCell(x, y, w / 2, h / 2, 0));
-	this->innerGrid.push_back(new GridCell(midX, y, w / 2, h / 2, 0));
-	this->innerGrid.push_back(new GridCell(x, midY, w / 2, h / 2, 0));
-	this->innerGrid.push_back(new GridCell(midX, midY, w / 2, h / 2, 0));
+	// 0 1
+	// 2 3
+	this->innerGrid.push_back(new GridCell(   x,    y, w / 2, h / 2)); // 0
+	this->innerGrid.push_back(new GridCell(midX,    y, w / 2, h / 2)); // 1
+	this->innerGrid.push_back(new GridCell(   x, midY, w / 2, h / 2)); // 2
+	this->innerGrid.push_back(new GridCell(midX, midY, w / 2, h / 2)); // 3
 }
 
 void GridCell::render(SDL_Renderer* renderer)

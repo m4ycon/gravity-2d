@@ -19,7 +19,7 @@ public:
 
 	bool running() { return isRunning; }
 
-	GridCell* getGridCell(double x, double y);
+	GridCell* getGridCell(int x, int y);
 
 private:
 	bool isRunning;

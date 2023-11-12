@@ -114,7 +114,7 @@ void Game::clean()
     cout << "Game Cleaned" << endl;
 }
 
-GridCell* Game::getGridCell(double x, double y)
+GridCell* Game::getGridCell(int x, int y)
 {
     if (x < 0 || y < 0) return nullptr;
     if (x >= SCREEN_WIDTH || y >= SCREEN_HEIGHT) return nullptr;
@@ -130,7 +130,7 @@ void Game::initParticles()
     for (int x = 0; x < SCREEN_WIDTH; x += gridSize) {
         grid.push_back({});
         for (int y = 0; y < SCREEN_HEIGHT; y += gridSize) {
-            auto gc = new GridCell(x, y, gridSize, gridSize, 0);
+            auto gc = new GridCell(x, y, gridSize, gridSize);
             grid[x / gridSize].push_back(gc);
         }
     }
