@@ -134,7 +134,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="GridCell.cpp" />
+    <ClCompile Include="Grid.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="Utils.cpp" />
@@ -142,7 +142,7 @@
   <ItemGroup>
     <ClInclude Include="common.hpp" />
     <ClInclude Include="Game.hpp" />
-    <ClInclude Include="GridCell.hpp" />
+    <ClInclude Include="Grid.hpp" />
     <ClInclude Include="Particle.hpp" />
     <ClInclude Include="Utils.hpp" />
   </ItemGroup>

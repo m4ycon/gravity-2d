@@ -116,7 +116,7 @@ void Game::clean()
 void Game::initParticles()
 {
     this->particles = {};
-    this->grid = new GridCell(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+    this->grid = new Grid(MIN_INNER_GRID);
 
     const auto safePadding = 100;
     rep(_, 0, nParticles) {

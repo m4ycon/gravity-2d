@@ -26,4 +26,4 @@ typedef double db;
 #define INITIAL_MASS 1000000 // kg
 #define INITIAL_VEL_LIMIT 0 // m/s - max initial particles velocity
 #define GRID_SIZE 512 // px
-#define MIN_INNER_GRID 4 // px
+#define MIN_INNER_GRID 8 // px

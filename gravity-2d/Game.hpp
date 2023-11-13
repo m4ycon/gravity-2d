@@ -1,7 +1,7 @@
 #pragma once
 #include "common.hpp"
 #include "Particle.hpp"
-#include "GridCell.hpp"
+#include "Grid.hpp"
 
 class Game
 {
@@ -30,6 +30,6 @@ private:
 	int gridSize;
 
 	vector<Particle*> particles;
-	GridCell* grid;
+	Grid* grid;
 	void initParticles();
 };
