@@ -35,7 +35,7 @@ void GridCell::render(SDL_Renderer* renderer)
 	const int maxParticleColor = 10; // need this number of particles in grid to achieve 255 in color
 	int numParticles = mass / INITIAL_MASS;
 	int intensity = min(maxParticleColor, numParticles) * (255 / maxParticleColor);
-	SDL_SetRenderDrawColor(renderer, intensity, 0, 0, 255);
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, intensity);
 	SDL_Rect rect = { x, y, w, h };
 	SDL_RenderFillRect(renderer, &rect);
 }
@@ -60,4 +60,6 @@ GridCell* GridCell::getInnerGridCell(int x, int y)
 			&& y >= ig->y && y <= ig->y + ig->h
 		) return ig;
 	}
+
+	return nullptr;
 }

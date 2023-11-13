@@ -10,6 +10,7 @@ Game::Game(int nParticles, double initialVelLimit, double mass, int gridSize)
     this->isRunning = false;
     this->window = nullptr;
     this->renderer = nullptr;
+    this->grid = nullptr;
 }
 
 Game::~Game()
@@ -72,12 +73,9 @@ void Game::handleEvents()
 
 void Game::update(Uint32 frameStart)
 {
-    for (auto& line : grid) for (auto col : line) col->resetMass();
+    grid->resetMass();
 
-    for (auto p : particles) {
-        auto gc = getGridCell(p->x, p->y);
-        if (gc != nullptr) gc->addMass(p);
-    }
+    for (auto p : particles) grid->addMass(p);
 
     rep(i, 0, particles.size()) {
         rep(j, i + 1, particles.size()) {
@@ -91,10 +89,11 @@ void Game::update(Uint32 frameStart)
 
 void Game::render()
 {
+    SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_ADD);
     SDL_SetRenderDrawColor(renderer, RGBA_BLACK);
     SDL_RenderClear(renderer);
     
-    for (auto& line : grid) for (auto col : line) col->render(renderer);
+    grid->render(renderer);
     //for (auto p : particles) p->render(renderer);
 
     SDL_RenderPresent(renderer);
@@ -114,26 +113,10 @@ void Game::clean()
     cout << "Game Cleaned" << endl;
 }
 
-GridCell* Game::getGridCell(int x, int y)
-{
-    if (x < 0 || y < 0) return nullptr;
-    if (x >= SCREEN_WIDTH || y >= SCREEN_HEIGHT) return nullptr;
-
-    return grid[x / gridSize][y / gridSize];
-}
-
 void Game::initParticles()
 {
     this->particles = {};
-    this->grid = {};
-
-    for (int x = 0; x < SCREEN_WIDTH; x += gridSize) {
-        grid.push_back({});
-        for (int y = 0; y < SCREEN_HEIGHT; y += gridSize) {
-            auto gc = new GridCell(x, y, gridSize, gridSize);
-            grid[x / gridSize].push_back(gc);
-        }
-    }
+    this->grid = new GridCell(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     const auto safePadding = 100;
     rep(_, 0, nParticles) {
