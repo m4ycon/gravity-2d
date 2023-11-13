@@ -1,11 +1,10 @@
 #include "Game.hpp"
 
-Game::Game(int nParticles, double initialVelLimit, double mass, int gridSize)
+Game::Game(int nParticles, double initialVelLimit, double mass)
 {
     this->nParticles = nParticles;
     this->initialVelLimit = initialVelLimit;
     this->initialMass = mass;
-    this->gridSize = gridSize;
     
     this->isRunning = false;
     this->window = nullptr;
@@ -76,15 +75,15 @@ void Game::update(Uint32 frameStart)
     grid->resetMass();
 
     for (auto p : particles) grid->addMass(p);
-
-    rep(i, 0, particles.size()) {
-        rep(j, i + 1, particles.size()) {
-            particles[i]->applyForce(particles[j]);
-        }
-    }
+    grid->updateForces();
 
     double frameTime = (SDL_GetTicks() - static_cast<double>(frameStart)) / 1000.;
-    for (auto p : particles) p->move(frameTime);
+    for (auto p : particles) {
+        auto forces = grid->getForces(p);
+        p->dx += forces.first;
+        p->dy += forces.second;
+        p->move(frameTime);
+    }
 }
 
 void Game::render()
@@ -93,8 +92,8 @@ void Game::render()
     SDL_SetRenderDrawColor(renderer, RGBA_BLACK);
     SDL_RenderClear(renderer);
     
-    grid->render(renderer);
-    //for (auto p : particles) p->render(renderer);
+    //grid->render(renderer);
+    for (auto p : particles) p->render(renderer);
 
     SDL_RenderPresent(renderer);
 }
@@ -118,7 +117,7 @@ void Game::initParticles()
     this->particles = {};
     this->grid = new Grid(MIN_INNER_GRID);
 
-    const auto safePadding = 100;
+    const auto safePadding = 10;
     rep(_, 0, nParticles) {
         auto x = Utils::randomDouble(0 + safePadding, SCREEN_WIDTH - safePadding);
         auto y = Utils::randomDouble(0 + safePadding, SCREEN_HEIGHT - safePadding);

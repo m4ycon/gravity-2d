@@ -48,3 +48,11 @@ double Utils::randomDouble(double lowerBound, double upperBound)
 	return dis(gen);
 }
 
+double Utils::distance(double x1, double y1, double x2, double y2)
+{
+	auto dx = x1 - x2;
+	auto dy = y1 - y2;
+	auto distance = sqrt(dx * dx + dy * dy);
+	return distance;
+}
+

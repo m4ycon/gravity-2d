@@ -19,11 +19,10 @@ typedef double db;
 
 #define RGBA_BLACK 0, 0, 0, 255
 #define RGBA_WHITE 255, 255, 255, 255
-#define SCREEN_WIDTH 512
-#define SCREEN_HEIGHT 512
+#define SCREEN_WIDTH 1024
+#define SCREEN_HEIGHT 1024
 
-#define N_PARTICLES 1500
-#define INITIAL_MASS 1000000 // kg
+#define N_PARTICLES 50000
+#define INITIAL_MASS 5000 // kg
 #define INITIAL_VEL_LIMIT 0 // m/s - max initial particles velocity
-#define GRID_SIZE 512 // px
-#define MIN_INNER_GRID 8 // px
+#define MIN_INNER_GRID 32 // px

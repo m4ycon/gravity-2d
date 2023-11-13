@@ -8,14 +8,9 @@ public:
 
 	Particle(double x, double y, double dx, double dy, double m);
 	
-	void applyForce(Particle* particle);
-	void merge(Particle* particle);
 	void move(double timeLapsed);
 
 	void render(SDL_Renderer* renderer);
-
-	double distance(Particle* particle);
-	bool colision(Particle* particle);
 
 private:
 };

@@ -16,6 +16,8 @@ public:
 
 	void resetMass();
 	void addMass(Particle* p);
+	void updateForces();
+	pair<double, double> getForces(Particle* p);
 
 private:
 	double gridCellSize = 0;
@@ -28,7 +30,7 @@ private:
 class GridCell {
 public:
 	int x = 0, y = 0, w = 0, h = 0;
-	double mass = 0;
+	double dx = 0, dy = 0, mass = 0;
 	
 	GridCell(int x, int y, int w, int h);
 
@@ -36,5 +38,6 @@ public:
 
 	void resetMass();
 	void addMass(Particle* p);
+	void applyForce(GridCell* gc);
 };
 

@@ -6,7 +6,7 @@
 class Game
 {
 public:
-	Game(int nParticles, double initialVelLimit, double initialMass, int gridSize);
+	Game(int nParticles, double initialVelLimit, double initialMass);
 	~Game();
 
 	void init(string title, int xpos, int ypos, int width, int height, bool fullscreen);
@@ -27,7 +27,6 @@ private:
 	int nParticles;
 	double initialVelLimit;
 	double initialMass;
-	int gridSize;
 
 	vector<Particle*> particles;
 	Grid* grid;
