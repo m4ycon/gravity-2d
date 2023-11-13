@@ -34,14 +34,12 @@ void Grid::updateForces()
 {
 	const int lines = cells.size();
 	const int cols = cells[0].size();
-	rep(i, 0, lines) {
-		rep(j, 0, cols) {
-			rep(x, 0, lines) {
-				rep(y, 0, cols) {
-					if (i == x && j == y) continue;
-					cells[i][j]->applyForce(cells[x][y]);
-				}
-			}
+	int cnt = 0;
+	rep(i, 0, lines) rep(j, 0, cols) {
+		rep(y, j+1, cols) cells[i][j]->applyForce(cells[i][y]);
+
+		rep(x, i+1, lines) rep(y, 0, cols) {
+			cells[i][j]->applyForce(cells[x][y]);
 		}
 	}
 }
