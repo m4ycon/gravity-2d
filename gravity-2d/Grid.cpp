@@ -34,12 +34,26 @@ void Grid::updateForces()
 {
 	const int lines = cells.size();
 	const int cols = cells[0].size();
-	int cnt = 0;
-	rep(i, 0, lines) rep(j, 0, cols) {
+	
+	// n = lines * cols
+	// O( n * (n-1) / 2 )
+	/*rep(i, 0, lines) rep(j, 0, cols) {
 		rep(y, j+1, cols) cells[i][j]->applyForce(cells[i][y]);
 
 		rep(x, i+1, lines) rep(y, 0, cols) {
 			cells[i][j]->applyForce(cells[x][y]);
+		}
+	}*/
+
+	// n = lines * cols, r = radius
+	// O( n * (2r + 1)^2 )
+	int radius = 5;
+	rep(i, 0, lines) rep(j, 0, cols) {
+		rep(x, max(i - radius, 0), min(i + radius + 1, lines)) {
+			rep(y, max(j - radius, 0), min(j + radius + 1, cols)) {
+				if (i == x && j == y) continue;
+				cells[i][j]->applyForce(cells[x][y]);
+			}
 		}
 	}
 }
@@ -80,7 +94,7 @@ void GridCell::render(SDL_Renderer* renderer)
 	SDL_SetRenderDrawColor(renderer, RGBA_WHITE);
 	SDL_RenderDrawRect(renderer, &rect);*/
 
-	int maxParticleColor = 10; // need this number of particles in grid to reach 255
+	int maxParticleColor = 250; // need this number of particles in grid to reach 255
 	int numParticles = mass / INITIAL_MASS;
 	int intensity = min(maxParticleColor, numParticles) * (255 / maxParticleColor);
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, intensity);
