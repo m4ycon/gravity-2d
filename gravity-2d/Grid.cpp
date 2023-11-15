@@ -1,17 +1,14 @@
 #include "Grid.hpp"
 
-Grid::Grid(int gridCellSize)
+Grid::Grid(int gridCellSize, int xOrigin, int yOrigin, int width, int height)
 {
+	this->xOrigin = xOrigin;
+	this->yOrigin = yOrigin;
+	this->width = this->_width = xOrigin + width;
+	this->height = this->_height = yOrigin + height;
 	this->gridCellSize = gridCellSize;
 
-	this->cells = {};
-	for (int x = 0; x < SCREEN_WIDTH; x += gridCellSize) {
-		cells.push_back({});
-		for (int y = 0; y < SCREEN_HEIGHT; y += gridCellSize) {
-			auto gc = new GridCell(x, y, gridCellSize, gridCellSize);
-			cells[x / gridCellSize].push_back(gc);
-		}
-	}
+	this->resetCells();
 }
 
 void Grid::render(SDL_Renderer* renderer)
@@ -66,12 +63,37 @@ pair<double, double> Grid::getForces(Particle* p)
 	return { gc->dx, gc->dy };
 }
 
+void Grid::changeOrigin(int x, int y)
+{
+	this->xOrigin = x;
+	this->yOrigin = y;
+	this->width = x + this->_width;
+	this->height = y + this->_height;
+
+	this->resetCells();
+}
+
 GridCell* Grid::getGridCell(int x, int y)
 {
-	if (x < 0 || y < 0) return nullptr;
-	if (x >= SCREEN_WIDTH || y >= SCREEN_HEIGHT) return nullptr;
+	int xShifted = x - this->xOrigin;
+	int yShifted = y - this->yOrigin;
 
-	return cells[x / gridCellSize][y / gridCellSize];
+	if (xShifted < 0 || yShifted < 0) return nullptr;
+	if (xShifted >= SCREEN_WIDTH || yShifted >= SCREEN_HEIGHT) return nullptr;
+
+	return cells[xShifted / gridCellSize][yShifted / gridCellSize];
+}
+
+void Grid::resetCells()
+{
+	this->cells = {};
+	for (int x = this->xOrigin; x < this->width; x += gridCellSize) {
+		cells.push_back({});
+		for (int y = this->yOrigin; y < this->height; y += gridCellSize) {
+			auto gc = new GridCell(x, y, gridCellSize, gridCellSize);
+			cells[(x - this->xOrigin) / gridCellSize].push_back(gc);
+		}
+	}
 }
 
 GridCell::GridCell(int x, int y, int w, int h)

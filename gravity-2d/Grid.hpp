@@ -10,9 +10,11 @@ class GridCell;
 class Grid
 {
 public:
-	Grid(int gridCellSize);
+	Grid(int gridCellSize, int xOrigin = 0, int yOrigin = 0, int width = SCREEN_WIDTH, int height = SCREEN_HEIGHT);
 
 	void render(SDL_Renderer* renderer);
+
+	void changeOrigin(int x, int y);
 
 	void resetMass();
 	void addMass(Particle* p);
@@ -21,10 +23,14 @@ public:
 
 private:
 	double gridCellSize = 0;
+	int xOrigin = 0, yOrigin = 0, width = 0, height = 0;
+	int _width = 0, _height = 0;
 
 	vector<vector<GridCell*>> cells;
 
 	GridCell* getGridCell(int x, int y);
+
+	void resetCells();
 };
 
 class GridCell {
