@@ -138,30 +138,27 @@ void Game::resetParticles()
     }
 }
 
-const int offset = MAX_INNER_GRID;
 
 void Game::resetGrids()
 {
     const int numberOfGrids = 4;
 
-    vector<double> randDbs;
-    for (int i = 0; i < numberOfGrids * 2; i++) 
-        randDbs.push_back(Utils::randomDouble(-offset, offset));
-
     this->grids.clear();
     for (int i = 0; i < numberOfGrids; i++) {
-        auto g = new Grid(MAX_INNER_GRID >> i, randDbs[2 * i], randDbs[2 * i + 1]);
+        auto g = new Grid(MAX_INNER_GRID >> i);
         this->grids.push_back(g);
     }
 }
 
 void Game::moveGrids()
 {
+    const int offset = MAX_INNER_GRID;
     const int numberOfGrids = grids.size();
 
     vector<double> randDbs;
-    for (int i = 0; i < numberOfGrids * 2; i++)
+    for (int i = 0; i < numberOfGrids * 2; i++) {
         randDbs.push_back(Utils::randomDouble(-offset, offset));
+    }
 
     for (int i = 0; i < numberOfGrids; i++) {
         grids[i]->changeOrigin(randDbs[2 * i], randDbs[2 * i + 1]);

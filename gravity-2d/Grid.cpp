@@ -155,7 +155,7 @@ void GridCell::applyForce(GridCell* gc)
 	auto distance = Utils::distance(tx, ty, gx, gy);
 	auto force = Utils::calculateForce(this->mass, gc->mass, distance);
 
-	if (distance < 1) return;
+	if (distance < 5) return;
 
 	auto cadj = tx - gx; // cateto adjacente
 	auto cops = ty - gy; // cateto oposto
