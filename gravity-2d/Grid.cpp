@@ -1,11 +1,13 @@
 #include "Grid.hpp"
 
+const int padding = 128;
+
 Grid::Grid(int gridCellSize, int xOrigin, int yOrigin, int width, int height)
 {
-	this->xOrigin = xOrigin;
-	this->yOrigin = yOrigin;
-	this->width = this->_width = xOrigin + width;
-	this->height = this->_height = yOrigin + height;
+	this->xOrigin = xOrigin - padding;
+	this->yOrigin = yOrigin - padding;
+	this->width = this->_width = xOrigin + width + padding;
+	this->height = this->_height = yOrigin + height + padding;
 	this->gridCellSize = gridCellSize;
 
 	this->resetCells();
@@ -70,7 +72,13 @@ void Grid::changeOrigin(int x, int y)
 	this->width = x + this->_width;
 	this->height = y + this->_height;
 
-	this->resetCells();
+	for (int x = this->xOrigin; x < this->width; x += gridCellSize) {
+		for (int y = this->yOrigin; y < this->height; y += gridCellSize) {
+			auto c = cells[(x - this->xOrigin) / gridCellSize][(y - this->yOrigin) / gridCellSize];
+			c->x = x, c->y = y;
+			c->resetMass();
+		}
+	}
 }
 
 GridCell* Grid::getGridCell(int x, int y)
@@ -86,7 +94,7 @@ GridCell* Grid::getGridCell(int x, int y)
 
 void Grid::resetCells()
 {
-	this->cells = {};
+	this->cells.clear();
 	for (int x = this->xOrigin; x < this->width; x += gridCellSize) {
 		cells.push_back({});
 		for (int y = this->yOrigin; y < this->height; y += gridCellSize) {

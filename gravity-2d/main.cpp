@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 		frameTime = SDL_GetTicks() - frameStart;
 		if (frameDelay > frameTime) SDL_Delay(frameDelay - frameTime);
 
-		game->renderFPS(frameStart);
+		game->printFPS(frameStart);
 	}
 
 	game->clean();

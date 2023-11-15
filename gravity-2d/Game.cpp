@@ -9,7 +9,7 @@ Game::Game(int nParticles, double initialVelLimit, double mass)
     this->isRunning = false;
     this->window = nullptr;
     this->renderer = nullptr;
-    this->grid = nullptr;
+    this->grids.clear();
 }
 
 Game::~Game()
@@ -43,7 +43,7 @@ void Game::init(string title, int xpos, int ypos, int width, int height, bool fu
 
     isRunning = true;
 
-    this->initParticles();
+    this->resetParticles();
 }
 
 void Game::handleEvents()
@@ -63,7 +63,7 @@ void Game::handleEvents()
             isRunning = false;
             break;
         case SDLK_r:
-            this->initParticles();
+            this->resetParticles();
             break;
         default:
             break;
@@ -72,16 +72,24 @@ void Game::handleEvents()
 
 void Game::update(Uint32 frameStart)
 {
-    grid->resetMass();
-
-    for (auto p : particles) grid->addMass(p);
-    grid->updateForces();
+    for (auto g : grids) {
+        g->resetMass();
+        for (auto p : particles) g->addMass(p);
+        g->updateForces();
+    }
 
     double frameTime = (SDL_GetTicks() - static_cast<double>(frameStart)) / 1000.;
     for (auto p : particles) {
-        auto forces = grid->getForces(p);
-        p->dx += forces.first;
-        p->dy += forces.second;
+        double xAcc = 0, yAcc = 0;
+
+        for (auto g : grids) {
+            auto forces = g->getForces(p);
+            xAcc += forces.first;
+            yAcc += forces.second;
+        }
+
+        p->dx += xAcc;
+        p->dy += yAcc;
         p->move(frameTime);
     }
 }
@@ -93,12 +101,13 @@ void Game::render()
     SDL_RenderClear(renderer);
     
     //grid->render(renderer);
+    this->moveGrids();
     for (auto p : particles) p->render(renderer);
 
     SDL_RenderPresent(renderer);
 }
 
-void Game::renderFPS(Uint32 frameStart)
+void Game::printFPS(Uint32 frameStart)
 {
     auto actualFPS = 1000 / (SDL_GetTicks() - frameStart);
     cout << "FPS: " << actualFPS << endl;
@@ -112,10 +121,10 @@ void Game::clean()
     cout << "Game Cleaned" << endl;
 }
 
-void Game::initParticles()
+void Game::resetParticles()
 {
-    this->particles = {};
-    this->grid = new Grid(MIN_INNER_GRID);
+    this->resetGrids();
+    this->particles.clear();
 
     const auto safePadding = 10;
     rep(_, 0, nParticles) {
@@ -126,5 +135,35 @@ void Game::initParticles()
         
         Particle* p = new Particle(x, y, dx, dy, initialMass);
         this->particles.push_back(p);
+    }
+}
+
+const int offset = MAX_INNER_GRID;
+
+void Game::resetGrids()
+{
+    const int numberOfGrids = 4;
+
+    vector<double> randDbs;
+    for (int i = 0; i < numberOfGrids * 2; i++) 
+        randDbs.push_back(Utils::randomDouble(-offset, offset));
+
+    this->grids.clear();
+    for (int i = 0; i < numberOfGrids; i++) {
+        auto g = new Grid(MAX_INNER_GRID >> i, randDbs[2 * i], randDbs[2 * i + 1]);
+        this->grids.push_back(g);
+    }
+}
+
+void Game::moveGrids()
+{
+    const int numberOfGrids = grids.size();
+
+    vector<double> randDbs;
+    for (int i = 0; i < numberOfGrids * 2; i++)
+        randDbs.push_back(Utils::randomDouble(-offset, offset));
+
+    for (int i = 0; i < numberOfGrids; i++) {
+        grids[i]->changeOrigin(randDbs[2 * i], randDbs[2 * i + 1]);
     }
 }

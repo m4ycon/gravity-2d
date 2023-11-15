@@ -14,7 +14,7 @@ public:
 	void handleEvents();
 	void update(Uint32 frameStart);
 	void render();
-	void renderFPS(Uint32 frameStart);
+	void printFPS(Uint32 frameStart);
 	void clean();
 
 	bool running() { return isRunning; }
@@ -29,6 +29,8 @@ private:
 	double initialMass;
 
 	vector<Particle*> particles;
-	Grid* grid;
-	void initParticles();
+	vector<Grid*> grids;
+	void resetParticles();
+	void resetGrids();
+	void moveGrids();
 };
