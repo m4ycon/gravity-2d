@@ -30,6 +30,7 @@ private:
 
 	vector<Particle*> particles;
 	vector<Grid*> grids;
+	Grid* gridDisplay;
 	void resetParticles();
 	void resetGrids();
 	void moveGrids();

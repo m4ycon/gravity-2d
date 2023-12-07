@@ -92,6 +92,9 @@ void Game::update(Uint32 frameStart)
         p->dy += yAcc;
         p->move(frameTime);
     }
+
+    gridDisplay->resetMass();
+    for (auto p : particles) gridDisplay->addMass(p);
 }
 
 void Game::render()
@@ -101,8 +104,10 @@ void Game::render()
     SDL_RenderClear(renderer);
     
     //grid->render(renderer);
+    //for (auto p : particles) p->render(renderer);
+
+    gridDisplay->render(renderer);
     this->moveGrids();
-    for (auto p : particles) p->render(renderer);
 
     SDL_RenderPresent(renderer);
 }
@@ -148,6 +153,8 @@ void Game::resetGrids()
         auto g = new Grid(MAX_INNER_GRID >> i);
         this->grids.push_back(g);
     }
+
+    gridDisplay = new Grid(4);
 }
 
 void Game::moveGrids()

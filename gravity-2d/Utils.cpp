@@ -56,3 +56,13 @@ double Utils::distance(double x1, double y1, double x2, double y2)
 	return distance;
 }
 
+tuple<double, double, double> Utils::heatToRGB(double heat)
+{
+	heat = max(0., min(1., heat));
+
+	if (heat <= 0.5)
+		return make_tuple(0, 255 * (heat * 2), 255 - 255 * (heat * 2));
+	
+	return make_tuple(255 * (heat - 0.5) * 2, 255 - 255 * (heat - 0.5) * 2, 0);
+}
+

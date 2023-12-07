@@ -3,6 +3,7 @@
 #include <iostream>
 #include <stdio.h>
 #include <vector>
+#include <tuple>
 #include "Utils.hpp"
 
 using namespace std;
@@ -22,7 +23,7 @@ typedef double db;
 #define SCREEN_WIDTH 1024
 #define SCREEN_HEIGHT 1024
 
-#define N_PARTICLES 1500
-#define INITIAL_MASS 1000000 // kg
+#define N_PARTICLES 100000
+#define INITIAL_MASS 1000 // kg
 #define INITIAL_VEL_LIMIT 0 // m/s - max initial particles velocity
 #define MAX_INNER_GRID 128 // px
