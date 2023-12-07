@@ -105,9 +105,7 @@ void Game::render()
     SDL_SetRenderDrawColor(renderer, RGBA_BLACK);
     SDL_RenderClear(renderer);
     
-    //grid->render(renderer);
     //for (auto p : particles) p->render(renderer);
-
     gridDisplay->render(renderer);
 
     SDL_RenderPresent(renderer);
