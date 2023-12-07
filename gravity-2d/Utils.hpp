@@ -15,5 +15,5 @@ public:
 	static double calculateForce(double mass1, double mass2, double distance);
 	static double randomDouble(double lowerBound, double upperBound);
 	static double distance(double x1, double y1, double x2, double y2);
-	static tuple<double, double, double> heatToRGB(double heat);
+	static tuple<int, int, int> heatToRGB(double heat);
 };

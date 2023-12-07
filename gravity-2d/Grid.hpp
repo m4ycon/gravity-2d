@@ -14,7 +14,7 @@ public:
 
 	void render(SDL_Renderer* renderer);
 
-	void changeOrigin(int x, int y);
+	void changeOrigin();
 
 	void resetMass();
 	void addMass(Particle* p);
@@ -36,7 +36,7 @@ private:
 class GridCell {
 public:
 	int x = 0, y = 0, w = 0, h = 0;
-	double dx = 0, dy = 0, mass = 0;
+	double dx = 0, dy = 0, centerX = 0, centerY = 0, mass = 0;
 	
 	GridCell(int x, int y, int w, int h);
 

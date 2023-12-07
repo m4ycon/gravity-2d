@@ -72,6 +72,8 @@ void Game::handleEvents()
 
 void Game::update(Uint32 frameStart)
 {
+    this->moveGrids();
+
     for (auto g : grids) {
         g->resetMass();
         for (auto p : particles) g->addMass(p);
@@ -83,9 +85,9 @@ void Game::update(Uint32 frameStart)
         double xAcc = 0, yAcc = 0;
 
         for (auto g : grids) {
-            auto forces = g->getForces(p);
-            xAcc += forces.first;
-            yAcc += forces.second;
+            auto [fx, fy] = g->getForces(p);
+            xAcc += fx;
+            yAcc += fy;
         }
 
         p->dx += xAcc;
@@ -107,7 +109,6 @@ void Game::render()
     //for (auto p : particles) p->render(renderer);
 
     gridDisplay->render(renderer);
-    this->moveGrids();
 
     SDL_RenderPresent(renderer);
 }
@@ -159,15 +160,5 @@ void Game::resetGrids()
 
 void Game::moveGrids()
 {
-    const int offset = MAX_INNER_GRID;
-    const int numberOfGrids = grids.size();
-
-    vector<double> randDbs;
-    for (int i = 0; i < numberOfGrids * 2; i++) {
-        randDbs.push_back(Utils::randomDouble(-offset, offset));
-    }
-
-    for (int i = 0; i < numberOfGrids; i++) {
-        grids[i]->changeOrigin(randDbs[2 * i], randDbs[2 * i + 1]);
-    }
+    for (auto g : grids) g->changeOrigin();
 }
