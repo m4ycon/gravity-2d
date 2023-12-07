@@ -128,9 +128,9 @@ void GridCell::render(SDL_Renderer* renderer)
 	SDL_SetRenderDrawColor(renderer, RGBA_WHITE);
 	SDL_RenderDrawRect(renderer, &rect);*/
 
-	const auto maxParticleColor = 105.; // need this number of particles in grid to reach 255
+	const auto maxParticleColor = 200.; // need this number of particles in grid to reach 255
 	const auto numParticles = mass / INITIAL_MASS;
-	const auto intensity = min(maxParticleColor, numParticles) / maxParticleColor;
+	const auto intensity = min(1., numParticles / maxParticleColor);
 	auto [r, g, b] = Utils::heatToRGB(intensity);
 	const int a = max(100., intensity * 255.);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
