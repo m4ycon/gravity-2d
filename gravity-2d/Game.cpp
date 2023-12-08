@@ -90,8 +90,8 @@ void Game::render()
     SDL_SetRenderDrawColor(renderer, RGBA_BLACK);
     SDL_RenderClear(renderer);
     
-    //for (auto p : particles) p->render(renderer);
-    for (auto line : grid) for (auto col : line ) col->render(renderer);
+    if (RENDER_PARTICLES) for (auto p : particles) p->render(renderer);
+    else for (auto& line : grid) for (auto col : line) col->render(renderer);
 
     SDL_RenderPresent(renderer);
 }
