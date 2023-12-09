@@ -158,9 +158,9 @@ void GridCell::addMass(Particle* p)
 void GridCell::applyForce(GridCell* gc)
 {
 	auto distance = Utils::distance(this->centerX, this->centerY, gc->centerX, gc->centerY);
-	if (distance < 4) return;
-	
 	auto force = Utils::calculateForce(this->mass, gc->mass, distance);
+
+	if (distance < 4) force = min(1., force);
 
 	auto cadj = this->centerX - gc->centerX; // cateto adjacente
 	auto cops = this->centerY - gc->centerY; // cateto oposto
